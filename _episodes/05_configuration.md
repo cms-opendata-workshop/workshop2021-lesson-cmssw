@@ -37,10 +37,9 @@ __init__.py  __init__.pyc  demoanalyzer_cfi.py  demoanalyzer_cfi.pyc
 
 You will note that there is a `demoanalyzer_cfi.py` in there.  We will not pay attention to this file now, but it instructive to point out that the `_cfg` and `_cfi` descriptors are meaningful.  While the former one defines a top level configuration, the latter works more like a *module initialization* file.  There are also `_cff` files which bear pieces of configuration and so they are dubbed *config fragments*.  You can read a bit more about it in [this subsection](https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookConfigFileIntro#PythonConfigExamples) of the Workbook.
 
-Ok, so the file we will play around with is just the `Demo/DemoAnalyzer/demoanalyzer_cfg.py`.  Let's take a look with `nano` or `vi` ([here](https://www.thegeekdiary.com/basic-vi-commands-cheat-sheet/) you can find a good cheatsheet for that editor):
-
+Ok, so the file we will play around with is just the `Demo/DemoAnalyzer/demoanalyzer_cfg.py`.  Let's take a look with the `nano` editor:
 ~~~
-vi Demo/DemoAnalyzer/demoanalyzer_cfg.py
+nano Demo/DemoAnalyzer/demoanalyzer_cfg.py
 ~~~
 {: .language-bash}
 
@@ -62,7 +61,7 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 ~~~
 {: .language-python}
 
-Actually, because of the `_cfi` tag, we know it is presumably a piece of Python code that initializes some module.  Indeed, it is the *MessageLogger* service.  As the name describes, it controls how the message logging is handled during the job execution.  The string ``"FWCore.MessageService.MessageLogger_cfi"`` tells you exactly where to look for it on [Github](https://github.com/cms-sw/cmssw/blob/CMSSW_5_3_X/FWCore/MessageService/python/MessageLogger_cfi.py) if you needed it.  Note the structure matches the repository's except that the `python` directory name is always omitted when loading modules this way (this is why it is often important to put config files in the python directory).
+Actually, because of the `_cfi` tag, we know it is presumably a piece of Python code that initializes some module.  Indeed, it is the *MessageLogger* service.  As the name describes, it controls how the message logging is handled during the job execution.  The string ``"FWCore.MessageService.MessageLogger_cfi"`` tells you exactly where to look for it on [Github](https://github.com/cms-sw/cmssw/blob/CMSSW_5_3_X/FWCore/MessageService/python/MessageLogger_cfi.py) if you needed it.  Note the structure matches the repository's, except that the `python` directory name is always omitted when loading modules this way (this is why it is often important to put config files in the python directory).
 
 There is a whole [Workbook section](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMessageLogger) regarding this module, but let's just look at a simple example.
 
@@ -99,14 +98,14 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 ~~~
 {: .language-python}
 
-Next, there is the first module (also an object by itself) we are attaching it to our process object:
+Next, there is the first module (also an object by itself) we are attaching to our process object:
 
 ~~~
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
     #    'file:myfile.root'
-        'root://eospublic.cern.ch//eos/opendata/cms/Run2011A/ElectronHad/AOD/12Oct2013-v1/20001/001F9231-F141-E311-8F76-003048F00942.root'
+        'root://eospublic.cern.ch//eos/opendata/cms/Run2012B/DoubleMuParked/AOD/22Jan2013-v1/10000/1EC938EF-ABEC-E211-94E0-90E6BA442F24.root'
     )
 )
 ~~~
@@ -125,7 +124,7 @@ Inside the process object there must be exactly one object assigned that has Pyt
 > {: .solution}
 {: .challenge}
 
-Note also that the `fileNames` variable is a `vstring`, i.e., a vector of strings in the C++ sense.  In Python, it is a list, so you can very well input a comma separated list of files.  There is a drawback, though.  In general, our open datasets will contain more than 255 files, which is the limit for the number of arguments a Python function can take, so very long vstrings cannot be created in one step.  There are [various alternatives](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePythonTips#Running_on_more_than_255_files) to circumvent this problem.  However, in our workshop, we will use the [FileUtils](https://github.com/cms-sw/cmssw/blob/master/FWCore/Utilities/python/FileUtils.py) module to load all the required files.
+Note also that the `fileNames` variable is a `vstring`, i.e., a vector of strings in the C++ sense.  In Python, it is a list, so you can very well input a comma separated list of files.  There is a drawback, though.  In general, our open datasets will contain more than 255 files, which is the limit for the number of arguments a Python function can take, so very long vstrings cannot be created in one step.  There are [various alternatives](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePythonTips#Running_on_more_than_255_files) to circumvent this problem.  To run over massive amounts of ROOT files, one will usually use the [FileUtils](https://github.com/cms-sw/cmssw/blob/master/FWCore/Utilities/python/FileUtils.py) module to load index files instead of individual ROOT files.
 
 ## Conditions Data
 
@@ -134,14 +133,15 @@ Let's keep exploring the `demoanalyzer_cfg.py` config file.  The next few lines
 ~~~
 #needed to cache the conditions data
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-#process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/FT_53_LV5_AN1_RUNA.db')
-process.GlobalTag.globaltag = 'FT_53_LV5_AN1::All'
+#Uncomment if using CVMFS file system for accessing conditions
+#process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/FT53_V21A_AN6_FULL.db')
+process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 ~~~
 {: .language-python}
 
-have to do with being able to read CMSSW database information.  We call this the [Conditions Data](http://opendata.cern.ch/docs/cms-guide-for-condition-database) as we may find values for calibration, alignment, trigger info, etc., in these database snapshots.  One can think of the `GlobalTag` as a label that contains a set of database snapshots that need to be adequate for a point in time in the history of the CMS detector.  For 2011/2012 open data release, the global tag is `FT_53_LV5_AN1` (the `::All` string is a flag that tells the frameworks to read *All* the information associated with the tag).  
+have to do with being able to read CMSSW database information.  We call this the [Conditions Data](http://opendata.cern.ch/docs/cms-guide-for-condition-database) as we may find values for calibration, alignment, trigger info, etc., in these database snapshots.  One can think of the `GlobalTag` as a label that contains a set of database snapshots that need to be adequate for a point in time in the history of the CMS detector.  For 2011/2012 open data release, the global tag is `FT53_V21A_AN6` (the `::All` string is a flag that tells the frameworks to read *All* the information associated with the tag).  
 
-The `connect` variable just modifies they way in which the framework is going to access these snapshots. You may notice that, if you are using the Docker environment, this line is commented out (like above), while if you are using the Virtual Machine it is not commented out.  This is because when using VMs, wee read these conditions from the shared files system area at CERN (CVMFS), so we need it active.  Read in the latter way, the conditions will be cached locally in your virtual machine the first time you run and so the CMSSW job will be slow.  Fortunately, we already did this while setting up our VM, so our jobs will run much faster.  This does not really matter for the Docker container (keep this line commented out).
+The `connect` variable just modifies they way in which the framework is going to access these snapshots. You may notice that, if you are using the Docker environment, this line is commented out (like above), while if you are using the Virtual Machine it is not commented out.  This is because when using VMs, we read these conditions from the shared files system area at CERN (CVMFS), so we need it active.  Read in the latter way, the conditions will be cached locally in your virtual machine the first time you run and so the CMSSW job will be slow.  Fortunately, we already did this while setting up our VM, so our jobs will run much faster.  This does not really matter for the Docker container (keep this line commented out).
 
 ## Configure our DemoAnalyzer
 
@@ -185,7 +185,7 @@ has to do with our recently created `DemoAnalyzer`.  This module is now just a *
 > >   muonInput = iConfig.getParameter<edm::InputTag>("InputCollection");
 > > }
 > > ~~~
-> > {: language-cpp}
+> > {: .language-cpp}
 > >
 > > Here we will be reading the `InputCollection` variable from configuration (which is of type `edm::InputTag`, which is [essentially a string](https://github.com/cms-sw/cmssw/blob/52ef6482b221be8c1516bcc6eab63015d4e1fb72/FWCore/Utilities/interface/InputTag.h#L15)) and will store it in the `muonInput` container.
 > >
@@ -262,11 +262,10 @@ Reading cached build data
 >> Local Products Rules ..... started
 >> Local Products Rules ..... done
 >> Building CMSSW version CMSSW_5_3_32 ----
->> Subsystem FT_53_LV5_AN1 built
 >> Entering Package Demo/DemoAnalyzer
 >> Creating project symlinks
   src/Demo/DemoAnalyzer/python -> python/Demo/DemoAnalyzer
->> Compiling edm plugin /home/cmsusr/test/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc
+>> Compiling edm plugin /home/cmsusr/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc 
 >> Building edm plugin tmp/slc6_amd64_gcc472/src/Demo/DemoAnalyzer/src/DemoDemoAnalyzer/libDemoDemoAnalyzer.so
 Leaving library rule at Demo/DemoAnalyzer
 @@@@ Running edmWriteConfigs for DemoDemoAnalyzer
@@ -276,7 +275,7 @@ Leaving library rule at Demo/DemoAnalyzer
 >> Subsystem Demo built
 >> Local Products Rules ..... started
 >> Local Products Rules ..... done
-gmake[1]: Entering directory `/home/cmsusr/test/CMSSW_5_3_32'
+gmake[1]: Entering directory `/home/cmsusr/CMSSW_5_3_32'
 >> Creating project symlinks
   src/Demo/DemoAnalyzer/python -> python/Demo/DemoAnalyzer
 >> Done python_symlink
@@ -287,7 +286,7 @@ gmake[1]: Entering directory `/home/cmsusr/test/CMSSW_5_3_32'
 @@@@ Refreshing Plugins:edmPluginRefresh
 >> Pluging of all type refreshed.
 >> Done generating edm plugin poisoned information
-gmake[1]: Leaving directory `/home/cmsusr/test/CMSSW_5_3_32'
+gmake[1]: Leaving directory `/home/cmsusr/CMSSW_5_3_32'
 ~~~
 {: .output}
 
@@ -304,35 +303,81 @@ If you check the development of the job with
 tail -f mylog.log
 ~~~
 
-Eventually, you will see something like:
+Eventually, as the job progresses, you will see something like:
 
 ~~~
 ...
-Begin processing the 21st record. Run 166782, Event 340669175, LumiSection 309 at 21-Sep-2020 03:54:42.464 CEST
-Begin processing the 26th record. Run 166782, Event 340969031, LumiSection 309 at 21-Sep-2020 03:54:42.465 CEST
-Muon # 0 with E = 5.69502 GeV.
-Begin processing the 31st record. Run 166782, Event 340976903, LumiSection 309 at 21-Sep-2020 03:54:42.467 CEST
-Begin processing the 36th record. Run 166782, Event 341180751, LumiSection 309 at 21-Sep-2020 03:54:42.468 CEST
-Muon # 0 with E = 3.34225 GeV.
-Muon # 1 with E = 3.58025 GeV.
-Muon # 2 with E = 6.38618 GeV.
-Begin processing the 41st record. Run 166782, Event 340390232, LumiSection 309 at 21-Sep-2020 03:54:42.469 CEST
-Muon # 0 with E = 3.11859 GeV.
-Muon # 1 with E = 4.65139 GeV.
-Muon # 2 with E = 6.14445 GeV.
-Muon # 3 with E = 10.3529 GeV.
-Muon # 4 with E = 12.1988 GeV.
-Muon # 5 with E = 4.36989 GeV.
-Muon # 6 with E = 8.17477 GeV.
-Begin processing the 46th record. Run 166782, Event 340721280, LumiSection 309 at 21-Sep-2020 03:54:42.471 CEST
-Muon # 0 with E = 9.15747 GeV.
-Muon # 1 with E = 7.45448 GeV.
-Begin processing the 51st record. Run 166782, Event 340800336, LumiSection 309 at 21-Sep-2020 03:54:42.472 CEST
-Muon # 0 with E = 13.085 GeV.
-Begin processing the 56th record. Run 166782, Event 341075240, LumiSection 309 at 21-Sep-2020 03:54:42.473 CEST
-Muon # 0 with E = 28.4378 GeV.
-Muon # 1 with E = 4.59856 GeV.
-..
+Begin processing the 21st record. Run 195013, Event 24568715, LumiSection 66 at 02-Jul-2021 07:30:04.173 CEST
+Muon # 0 with E = 80.9343 GeV.
+Muon # 1 with E = 57.3367 GeV.
+Muon # 0 with E = 64.6396 GeV.
+Muon # 1 with E = 784.396 GeV.
+Muon # 0 with E = 174.626 GeV.
+Muon # 1 with E = 52.107 GeV.
+Muon # 0 with E = 254.615 GeV.
+Muon # 1 with E = 115.981 GeV.
+Muon # 0 with E = 17.6325 GeV.
+Muon # 1 with E = 43.1466 GeV.
+Begin processing the 26th record. Run 195013, Event 25773019, LumiSection 66 at 02-Jul-2021 07:30:08.037 CEST
+Muon # 0 with E = 896.068 GeV.
+Muon # 1 with E = 30.0968 GeV.
+Muon # 0 with E = 31.7867 GeV.
+Muon # 1 with E = 45.007 GeV.
+Muon # 0 with E = 144.005 GeV.
+Muon # 1 with E = 32.4624 GeV.
+Muon # 0 with E = 109.775 GeV.
+Muon # 1 with E = 29.5543 GeV.
+Muon # 0 with E = 3.44853 GeV.
+Begin processing the 31st record. Run 195013, Event 25407425, LumiSection 66 at 02-Jul-2021 07:30:08.039 CEST
+Muon # 0 with E = 38.4875 GeV.
+Muon # 1 with E = 37.2395 GeV.
+Muon # 0 with E = 58.2166 GeV.
+Muon # 1 with E = 64.7743 GeV.
+Muon # 0 with E = 73.7936 GeV.
+Muon # 1 with E = 48.7898 GeV.
+Muon # 0 with E = 9.98582 GeV.
+Muon # 1 with E = 20.2956 GeV.
+Muon # 2 with E = 34.8767 GeV.
+Muon # 0 with E = 79.7684 GeV.
+Muon # 1 with E = 49.3363 GeV.
+Begin processing the 36th record. Run 195013, Event 24586506, LumiSection 66 at 02-Jul-2021 07:30:08.042 CEST
+Muon # 0 with E = 11.7313 GeV.
+Muon # 1 with E = 22.7098 GeV.
+Muon # 2 with E = 8.99836 GeV.
+Muon # 0 with E = 29.3587 GeV.
+Muon # 1 with E = 40.9274 GeV.
+Muon # 0 with E = 200.812 GeV.
+Muon # 1 with E = 159.71 GeV.
+Muon # 0 with E = 70.8434 GeV.
+Muon # 1 with E = 66.9168 GeV.
+Muon # 0 with E = 11.5945 GeV.
+Muon # 1 with E = 9.92587 GeV.
+Begin processing the 41st record. Run 195013, Event 24369161, LumiSection 66 at 02-Jul-2021 07:30:08.044 CEST
+Muon # 0 with E = 8.64982 GeV.
+Muon # 1 with E = 61.2678 GeV.
+Muon # 0 with E = 54.6933 GeV.
+Muon # 1 with E = 14.3586 GeV.
+Muon # 2 with E = 23.4211 GeV.
+Muon # 0 with E = 61.2773 GeV.
+Muon # 1 with E = 22.6716 GeV.
+Muon # 0 with E = 5.82828 GeV.
+Muon # 1 with E = 31.43 GeV.
+Muon # 0 with E = 16.4137 GeV.
+Muon # 1 with E = 16.8835 GeV.
+Begin processing the 46th record. Run 195013, Event 25119433, LumiSection 66 at 02-Jul-2021 07:30:08.046 CEST
+Muon # 0 with E = 63.0295 GeV.
+Muon # 1 with E = 98.7107 GeV.
+Muon # 0 with E = 123.7 GeV.
+Muon # 1 with E = 38.6976 GeV.
+Muon # 0 with E = 64.3109 GeV.
+Muon # 1 with E = 6.35752 GeV.
+Muon # 2 with E = 35.0825 GeV.
+Muon # 0 with E = 54.5795 GeV.
+Muon # 1 with E = 27.9381 GeV.
+Muon # 0 with E = 23.4076 GeV.
+Muon # 1 with E = 12.5354 GeV.
+Muon # 2 with E = 11.035 GeV.
+...
 ~~~
 {: .output}
 
@@ -342,30 +387,78 @@ Muon # 1 with E = 4.59856 GeV.
 >
 > > ## Solution
 > >
-> > For a part of your output you should see something like:
+> > For the corresponding part of your output you should see something like:
 > >
 > > ~~~
-> > Begin processing the 21st record. Run 166782, Event 340669175, LumiSection 309 at 21-Sep-2020 04:36:50.314 CEST
-> > Begin processing the 26th record. Run 166782, Event 340969031, LumiSection 309 at 21-Sep-2020 04:36:50.315 CEST
-> > Muon # 0 with E = 1.85208 GeV.
-> > Begin processing the 31st record. Run 166782, Event 340976903, LumiSection 309 at 21-Sep-2020 04:36:50.317 CEST
-> > Muon # 0 with E = 12.831 GeV.
-> > Begin processing the 36th record. Run 166782, Event 341180751, LumiSection 309 at 21-Sep-2020 04:36:50.318 CEST
-> > Muon # 0 with E = 5.89144 GeV.
-> > Muon # 1 with E = 0.238398 GeV.
-> > Muon # 2 with E = 1.36712 GeV.
-> > Begin processing the 41st record. Run 166782, Event 340390232, LumiSection 309 at 21-Sep-2020 04:36:50.320 CEST
-> > Begin processing the 46th record. Run 166782, Event 340721280, LumiSection 309 at 21-Sep-2020 04:36:50.321 CEST
-> > Muon # 0 with E = 0.42504 GeV.
-> > Muon # 1 with E = 0.244313 GeV.
-> > Begin processing the 51st record. Run 166782, Event 340800336, LumiSection 309 at 21-Sep-2020 04:36:50.322 CEST
-> > Muon # 0 with E = 0.97245 GeV.
-> > Begin processing the 56th record. Run 166782, Event 341075240, LumiSection 309 at 21-Sep-2020 04:36:50.324 CEST
-> > Muon # 0 with E = 4.1584 GeV.
-> > Muon # 1 with E = 3.54916 GeV.
-> > Muon # 0 with E = 10.8804 GeV.
-> > Muon # 1 with E = 4.60771 GeV.
-> > Muon # 0 with E = 10.1483 GeV.
+> > Begin processing the 21st record. Run 195013, Event 24568715, LumiSection 66 at 02-Jul-2021 07:52:18.760 CEST
+> > Muon # 0 with E = 10.4927 GeV.
+> > Muon # 1 with E = 184.426 GeV.
+> > Muon # 0 with E = 147.191 GeV.
+> > Muon # 1 with E = 67.3018 GeV.
+> > Muon # 0 with E = 116.842 GeV.
+> > Muon # 1 with E = 45.4152 GeV.
+> > Muon # 0 with E = 337.88 GeV.
+> > Muon # 1 with E = 69.1135 GeV.
+> > Muon # 0 with E = 16.551 GeV.
+> > Muon # 1 with E = 8.40728 GeV.
+> > Begin processing the 26th record. Run 195013, Event 25773019, LumiSection 66 at 02-Jul-2021 07:52:24.478 CEST
+> > Muon # 0 with E = 41.8064 GeV.
+> > Muon # 1 with E = 32.0273 GeV.
+> > Muon # 0 with E = 13.2664 GeV.
+> > Muon # 1 with E = 47.2524 GeV.
+> > Muon # 0 with E = 279.381 GeV.
+> > Muon # 1 with E = 21.9792 GeV.
+> > Muon # 0 with E = 42.3392 GeV.
+> > Muon # 1 with E = 12.1255 GeV.
+> > Muon # 0 with E = 2.4193 GeV.
+> > Muon # 1 with E = 11.1408 GeV.
+> > Muon # 2 with E = 8.58694 GeV.
+> > Begin processing the 31st record. Run 195013, Event 25407425, LumiSection 66 at 02-Jul-2021 07:52:24.484 CEST
+> > Muon # 0 with E = 1.28078 GeV.
+> > Muon # 1 with E = 0.490253 GeV.
+> > Muon # 2 with E = 11.24 GeV.
+> > Muon # 0 with E = 64.1598 GeV.
+> > Muon # 1 with E = 38.7984 GeV.
+> > Muon # 0 with E = 47.81 GeV.
+> > Muon # 1 with E = 332.486 GeV.
+> > Muon # 0 with E = 1.2533 GeV.
+> > Muon # 1 with E = 692.389 GeV.
+> > Muon # 0 with E = 44.5196 GeV.
+> > Muon # 1 with E = 42.2221 GeV.
+> > Muon # 2 with E = 12.1866 GeV.
+> > Muon # 3 with E = 40.4421 GeV.
+> > Begin processing the 36th record. Run 195013, Event 24586506, LumiSection 66 at 02-Jul-2021 07:52:24.487 CEST
+> > Muon # 0 with E = 11.959 GeV.
+> > Muon # 1 with E = 2.41103 GeV.
+> > Muon # 0 with E = 27.0548 GeV.
+> > Muon # 1 with E = 0.92917 GeV.
+> > Muon # 0 with E = 233.519 GeV.
+> > Muon # 1 with E = 162.572 GeV.
+> > Muon # 0 with E = 78.6423 GeV.
+> > Muon # 1 with E = 17.4387 GeV.
+> > Muon # 0 with E = 36.8009 GeV.
+> > Begin processing the 41st record. Run 195013, Event 24369161, LumiSection 66 at 02-Jul-2021 07:52:24.488 CEST
+> > Muon # 0 with E = 46.8979 GeV.
+> > Muon # 1 with E = 7.55877 GeV.
+> > Muon # 0 with E = 0.350877 GeV.
+> > Muon # 1 with E = 53.5919 GeV.
+> > Muon # 2 with E = 26.9923 GeV.
+> > Muon # 0 with E = 16.298 GeV.
+> > Muon # 1 with E = 59.6772 GeV.
+> > Muon # 0 with E = 9.12645 GeV.
+> > Muon # 0 with E = 0.239425 GeV.
+> > Muon # 1 with E = 6.8176 GeV.
+> > Begin processing the 46th record. Run 195013, Event 25119433, LumiSection 66 at 02-Jul-2021 07:52:24.490 CEST
+> > Muon # 0 with E = 130.738 GeV.
+> > Muon # 1 with E = 40.4002 GeV.
+> > Muon # 0 with E = 14.8666 GeV.
+> > Muon # 1 with E = 134.785 GeV.
+> > Muon # 0 with E = 32.0047 GeV.
+> > Muon # 1 with E = 52.7379 GeV.
+> > Muon # 0 with E = 75.797 GeV.
+> > Muon # 1 with E = 53.8169 GeV.
+> > Muon # 0 with E = 7.53448 GeV.
+> > Muon # 1 with E = 14.8669 GeV.
 > > ~~~
 > > {: .output}
 > {: .solution}
@@ -409,7 +502,7 @@ process.mypath = cms.Path (process.m1+process.m2+process.s1+process.m3)
 >
 > > ## The full config file
 > >
-> > **Do not forget to switch back to "muons"* for the InputTag.  The full config file will then look like:
+> > **Do not forget to switch back to "muons"** for the InputTag.  The full config file will then look like:
 > >
 > > ~~~
 > > import FWCore.ParameterSet.Config as cms
@@ -425,20 +518,20 @@ process.mypath = cms.Path (process.m1+process.m2+process.s1+process.m3)
 > >    # replace 'myfile.root' with the source file you want to use
 > >    fileNames = cms.untracked.vstring(
 > >    #    'file:myfile.root'
-> >        'root://eospublic.cern.ch//eos/opendata/cms/Run2011A/ElectronHad/AOD/12Oct2013-v1/20001/001F9231-F141-E311-8F76-003048F00942.root'
+> >        'root://eospublic.cern.ch//eos/opendata/cms/Run2012B/DoubleMuParked/AOD/22Jan2013-v1/10000/1EC938EF-ABEC-E211-94E0-90E6BA442F24.root'
 > >    )
 > > )
 > > #needed to cache the conditions data
 > > process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-> > process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/FT_53_LV5_AN1_RUNA.db')
-> > process.GlobalTag.globaltag = 'FT_53_LV5_AN1::All'
+> > #process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/FT53_V21A_AN6_FULL.db')
+> > process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 > >
 > > process.demo = cms.EDAnalyzer('DemoAnalyzer',
 > >        InputCollection = cms.InputTag("muons")
 > > )
 > >
 > > process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
-> > process.hltHighLevel.HLTPaths = cms.vstring('HLT_Mu15*')
+> > process.hltHighLevel.HLTPaths = cms.vstring('HLT_Mu7*')
 > >
 > > process.p = cms.Path(process.hltHighLevel+process.demo)
 > > ~~~
@@ -448,35 +541,22 @@ process.mypath = cms.Path (process.m1+process.m2+process.s1+process.m3)
 > Without even having to compile again, the execution of the trigger path will stop if the `hltHighLevel` filter module throws a `False` result. The output becomes
 >
 > ~~~
-> Begin processing the 1st record. Run 166782, Event 340184599, LumiSection 309 at 21-Sep-2020 05:44:20.327 CEST
-> Begin processing the 6th record. Run 166782, Event 340256207, LumiSection 309 at 21-Sep-2020 05:44:20.335 CEST
-> Begin processing the 11th record. Run 166782, Event 340439831, LumiSection 309 at 21-Sep-2020 05:44:20.340 CEST
-> Begin processing the 16th record. Run 166782, Event 340635879, LumiSection 309 at 21-Sep-2020 05:44:20.341 CEST
-> Begin processing the 21st record. Run 166782, Event 340669175, LumiSection 309 at 21-Sep-2020 05:44:20.344 CEST
-> Begin processing the 26th record. Run 166782, Event 340969031, LumiSection 309 at 21-Sep-2020 05:44:22.771 CEST
-> Begin processing the 31st record. Run 166782, Event 340976903, LumiSection 309 at 21-Sep-2020 05:44:22.774 CEST
-> Begin processing the 36th record. Run 166782, Event 341180751, LumiSection 309 at 21-Sep-2020 05:44:22.777 CEST
-> Begin processing the 41st record. Run 166782, Event 340390232, LumiSection 309 at 21-Sep-2020 05:44:22.779 CEST
-> Begin processing the 46th record. Run 166782, Event 340721280, LumiSection 309 at 21-Sep-2020 05:44:22.782 CEST
-> Begin processing the 51st record. Run 166782, Event 340800336, LumiSection 309 at 21-Sep-2020 05:44:22.784 CEST
-> Begin processing the 56th record. Run 166782, Event 341075240, LumiSection 309 at 21-Sep-2020 05:44:22.786 CEST
-> Begin processing the 61st record. Run 166782, Event 340174236, LumiSection 309 at 21-Sep-2020 05:44:22.787 CEST
-> Muon # 0 with E = 22.5233 GeV.
-> Begin processing the 66th record. Run 166782, Event 340343684, LumiSection 309 at 21-Sep-2020 05:44:41.220 CEST
-> Begin processing the 71st record. Run 166782, Event 340623812, LumiSection 309 at 21-Sep-2020 05:44:41.224 CEST
-> Begin processing the 76th record. Run 166782, Event 340743484, LumiSection 309 at 21-Sep-2020 05:44:41.228 CEST
-> Begin processing the 81st record. Run 166782, Event 341031628, LumiSection 309 at 21-Sep-2020 05:44:41.231 CEST
-> Begin processing the 86th record. Run 166782, Event 341213420, LumiSection 309 at 21-Sep-2020 05:44:41.233 CEST
-> Begin processing the 91st record. Run 166782, Event 340198962, LumiSection 309 at 21-Sep-2020 05:44:41.235 CEST
-> Begin processing the 96th record. Run 166782, Event 340375546, LumiSection 309 at 21-Sep-2020 05:44:41.236 CEST
+> ...
+> Begin processing the 21st record. Run 195013, Event 24568715, LumiSection 66 at 02-Jul-2021 08:25:24.637 CEST
+> Begin processing the 26th record. Run 195013, Event 25773019, LumiSection 66 at 02-Jul-2021 08:25:24.638 CEST
+> Begin processing the 31st record. Run 195013, Event 25407425, LumiSection 66 at 02-Jul-2021 08:25:24.639 CEST
+> Begin processing the 36th record. Run 195013, Event 24586506, LumiSection 66 at 02-Jul-2021 08:25:29.337 CEST
+> Begin processing the 41st record. Run 195013, Event 24369161, LumiSection 66 at 02-Jul-2021 08:25:29.343 CEST
+> Begin processing the 46th record. Run 195013, Event 25119433, LumiSection 66 at 02-Jul-2021 08:25:29.346 CEST
+> ...
 > ~~~
 > {: .output}
 >
->  The filter clearly prevents the execution of our EDAnalyzer in most of the events.
+>  It happens that for these few events we are testing, the filter clearly prevents the execution of our EDAnalyzer.
 {: .challenge}
 
 
-Congratulations!!, you have made it to the end the lesson.
+Congratulations!!, you have made it to the end the lesson.  
 
 
 {% include links.md %}

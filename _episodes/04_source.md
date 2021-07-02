@@ -15,10 +15,10 @@ keypoints:
 
 ## Playing with the DemoAnalyzer.cc file
 
-The `DemoAnalyzer.cc` file is the main file of our EDAnalyzer.  As it was mentioned, the default structure is always the same.  Let's look at what is inside using an editor like `nano` or `vi` ([here](https://www.thegeekdiary.com/basic-vi-commands-cheat-sheet/) you can find a good cheatsheet for the `vi` editor):
+The `DemoAnalyzer.cc` file is the main file of our EDAnalyzer.  As it was mentioned, the default structure is always the same.  Let's look at what is inside using an editor like `nano`:
 
 ~~~
-vi Demo/DemoAnalyzer/src/DemoAnalyzer.cc
+nano Demo/DemoAnalyzer/src/DemoAnalyzer.cc
 ~~~
 {: .language-bash}
 
@@ -48,7 +48,7 @@ Something important to take into account is that you can learn a lot about the k
 
 > ## Including muon headers
 >
-> Let's pretend that we are interested in extracting the energy of all the muons in the event.  We would need to add the appropriate classes for this.  After quickly reviewing [this guide](https://cms-opendata-guide.web.cern.ch/analysis/selection/objects/) (which is still unders construction), we conclude that we need to add these two header lines to our analyzer:
+> Let's pretend that we are interested in extracting the energy of all the muons in the event.  We would need to add the appropriate classes for this.  After quickly reviewing [this chapter](https://cms-opendata-guide.web.cern.ch/analysis/selection/objects/) of the CMS Open Data Guide (which is still under construction), we conclude that we need to add these two header lines to our analyzer:
 >
 > ```
 > //classes to extract Muon information
@@ -297,7 +297,7 @@ DemoAnalyzer::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup co
 ~~~
 {: .language-cpp}
 
-For instance, any instructions placed inside the `beginRun` routine will be executed every time the Framework sees a new Run (a Run is determined by the start and stop of the acquisition of the CMS detector).  During the workshop, we will use the `beginJob` and `endJob` routines to book histograms and write output files.
+For instance, any instructions placed inside the `beginRun` routine will be executed every time the Framework sees a new Run (a Run is determined by the start and stop of the acquisition of the CMS detector).  One may use the `beginJob` and `endJob` routines to, for example, book histograms or write output files.
 
 > ## Let's compile
 >  
@@ -314,29 +314,28 @@ For instance, any instructions placed inside the `beginRun` routine will be exec
 > > >> Local Products Rules ..... started
 > > >> Local Products Rules ..... done
 > > >> Building CMSSW version CMSSW_5_3_32 ----
-> > >> Subsystem FT_53_LV5_AN1 built
 > > >> Entering Package Demo/DemoAnalyzer
 > > >> Creating project symlinks
 > >   src/Demo/DemoAnalyzer/python -> python/Demo/DemoAnalyzer
-> > Entering library rule at Demo/DemoAnalyzer
-> > >> Compiling edm plugin /home/cmsusr/test/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc
+> > >> Compiling edm plugin /home/cmsusr/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc 
 > > In file included from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/TrackingRecHit/interface/TrackingRecHit.h:4:0,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/TrackingRecHit/interface/RecSegment.h:17,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/DTRecHit/interface/DTRecSegment4D.h:16,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/DTRecHit/interface/DTRecSegment4DCollection.h:20,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/MuonSegmentMatch.h:6,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/MuonChamberMatch.h:5,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/Muon.h:17,
-> >                 from /home/cmsusr/test/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc:34:
-> > /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/CLHEP/interface/AlgebraicObjects.h:8:33: fatal error: CLHEP/Matrix/Vector.h: No such file or directory compilation terminated.
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/TrackingRecHit/interface/RecSegment.h:17,
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/DTRecHit/interface/DTRecSegment4D.h:16,
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/DTRecHit/interface/DTRecSegment4DCollection.h:20,
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/MuonSegmentMatch.h:6,
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/MuonChamberMatch.h:5,
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/Muon.h:17,
+> >                  from /home/cmsusr/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc:34:
+> > /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/CLHEP/interface/AlgebraicObjects.h:8:33: fatal error: CLHEP/Matrix/Vector.h: No such file or directory
+> > compilation terminated.
 > > In file included from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/TrackingRecHit/interface/TrackingRecHit.h:4:0,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/TrackingRecHit/interface/RecSegment.h:17,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/DTRecHit/interface/DTRecSegment4D.h:16,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/DTRecHit/interface/DTRecSegment4DCollection.h:20,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/MuonSegmentMatch.h:6,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/MuonChamberMatch.h:5,
-> >                 from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/Muon.h:17,
-> >                 from /home/cmsusr/test/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc:34:
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/TrackingRecHit/interface/RecSegment.h:17,
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/DTRecHit/interface/DTRecSegment4D.h:16,
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/DTRecHit/interface/DTRecSegment4DCollection.h:20,
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/MuonSegmentMatch.h:6,
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/MuonChamberMatch.h:5,
+> >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/MuonReco/interface/Muon.h:17,
+> >                  from /home/cmsusr/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc:34:
 > > /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/CLHEP/interface/AlgebraicObjects.h:8:33: fatal error: CLHEP/Matrix/Vector.h: No such file or directory
 > > compilation terminated.
 > > gmake: *** [tmp/slc6_amd64_gcc472/src/Demo/DemoAnalyzer/src/DemoDemoAnalyzer/DemoAnalyzer.o] Error 1
@@ -368,8 +367,7 @@ cmsRun Demo/DemoAnalyzer/demoanalyzer_cfg.py > mylog.log 2>&1 &
 ~~~
 {: .language-bash}
 
-Well, it turns out that in the 10 events you looped over, there weren't many muons.  Of course, the ROOT file over which you are running is from an `ElectronHad`(ronic) datset, so
-it won't have that many.  In any case, your log file should output something like:
+Let's check the log file:
 
 ~~~
 cat mylog.log
@@ -377,20 +375,37 @@ cat mylog.log
 {: .language-bash}
 
 ~~~
-18-Sep-2020 08:22:40 CEST  Initiating request to open file root://eospublic.cern.ch//eos/opendata/cms/Run2011A/ElectronHad/AOD/12Oct2013-v1/20001/001F9231-F141-E311-8F76-003048F00942.root
-18-Sep-2020 08:22:42 CEST  Successfully opened file root://eospublic.cern.ch//eos/opendata/cms/Run2011A/ElectronHad/AOD/12Oct2013-v1/20001/001F9231-F141-E311-8F76-003048F00942.root
-Begin processing the 1st record. Run 166782, Event 340184599, LumiSection 309 at 18-Sep-2020 08:22:56.695 CEST
-Begin processing the 2nd record. Run 166782, Event 340185007, LumiSection 309 at 18-Sep-2020 08:22:56.716 CEST
-Begin processing the 3rd record. Run 166782, Event 340187903, LumiSection 309 at 18-Sep-2020 08:22:56.717 CEST
-Begin processing the 4th record. Run 166782, Event 340227487, LumiSection 309 at 18-Sep-2020 08:22:56.717 CEST
-Begin processing the 5th record. Run 166782, Event 340210607, LumiSection 309 at 18-Sep-2020 08:22:56.717 CEST
-Begin processing the 6th record. Run 166782, Event 340256207, LumiSection 309 at 18-Sep-2020 08:22:56.718 CEST
-Begin processing the 7th record. Run 166782, Event 340165759, LumiSection 309 at 18-Sep-2020 08:22:56.718 CEST
-Begin processing the 8th record. Run 166782, Event 340396487, LumiSection 309 at 18-Sep-2020 08:22:56.718 CEST
-Muon # 0 with E = 27.3492 GeV.
-Begin processing the 9th record. Run 166782, Event 340390767, LumiSection 309 at 18-Sep-2020 08:22:56.720 CEST
-Begin processing the 10th record. Run 166782, Event 340435263, LumiSection 309 at 18-Sep-2020 08:22:56.720 CEST
-18-Sep-2020 08:22:56 CEST  Closed file root://eospublic.cern.ch//eos/opendata/cms/Run2011A/ElectronHad/AOD/12Oct2013-v1/20001/001F9231-F141-E311-8F76-003048F00942.root
+02-Jul-2021 06:41:46 CEST  Initiating request to open file root://eospublic.cern.ch//eos/opendata/cms/Run2012B/DoubleMuParked/AOD/22Jan2013-v1/10000/1EC938EF-ABEC-E211-94E0-90E6BA442F24.root
+02-Jul-2021 06:41:50 CEST  Successfully opened file root://eospublic.cern.ch//eos/opendata/cms/Run2012B/DoubleMuParked/AOD/22Jan2013-v1/10000/1EC938EF-ABEC-E211-94E0-90E6BA442F24.root
+Begin processing the 1st record. Run 195013, Event 24425389, LumiSection 66 at 02-Jul-2021 06:42:00.346 CEST
+Muon # 0 with E = 8.47069 GeV.
+Begin processing the 2nd record. Run 195013, Event 24546773, LumiSection 66 at 02-Jul-2021 06:42:00.410 CEST
+Muon # 0 with E = 36.431 GeV.
+Muon # 1 with E = 32.3631 GeV.
+Begin processing the 3rd record. Run 195013, Event 24679037, LumiSection 66 at 02-Jul-2021 06:42:00.411 CEST
+Muon # 0 with E = 16.5536 GeV.
+Muon # 1 with E = 12.5258 GeV.
+Begin processing the 4th record. Run 195013, Event 24839453, LumiSection 66 at 02-Jul-2021 06:42:00.411 CEST
+Muon # 0 with E = 5.19378 GeV.
+Muon # 1 with E = 13.6549 GeV.
+Begin processing the 5th record. Run 195013, Event 24894477, LumiSection 66 at 02-Jul-2021 06:42:00.412 CEST
+Muon # 0 with E = 10.3546 GeV.
+Begin processing the 6th record. Run 195013, Event 24980717, LumiSection 66 at 02-Jul-2021 06:42:00.412 CEST
+Muon # 0 with E = 25.2733 GeV.
+Muon # 1 with E = 10.7545 GeV.
+Begin processing the 7th record. Run 195013, Event 25112869, LumiSection 66 at 02-Jul-2021 06:42:00.413 CEST
+Muon # 0 with E = 165.026 GeV.
+Muon # 1 with E = 145.994 GeV.
+Begin processing the 8th record. Run 195013, Event 25484261, LumiSection 66 at 02-Jul-2021 06:42:00.413 CEST
+Muon # 0 with E = 130.171 GeV.
+Muon # 1 with E = 73.1873 GeV.
+Begin processing the 9th record. Run 195013, Event 25702821, LumiSection 66 at 02-Jul-2021 06:42:00.414 CEST
+Muon # 0 with E = 24.0889 GeV.
+Muon # 1 with E = 14.4771 GeV.
+Begin processing the 10th record. Run 195013, Event 25961949, LumiSection 66 at 02-Jul-2021 06:42:00.414 CEST
+Muon # 0 with E = 189.134 GeV.
+Muon # 1 with E = 38.8268 GeV.
+02-Jul-2021 06:42:00 CEST  Closed file root://eospublic.cern.ch//eos/opendata/cms/Run2012B/DoubleMuParked/AOD/22Jan2013-v1/10000/1EC938EF-ABEC-E211-94E0-90E6BA442F24.root
 
 =============================================
 
@@ -409,7 +424,6 @@ MessageLogger Summary
 Severity    # Occurrences   Total Occurrences
 --------    -------------   -----------------
 System                  3                   3
-
 ~~~
 {: .output}
 

@@ -52,7 +52,7 @@ DemoAnalyzer.cc
 
 Note that it has a similar structure as any of the CMSSW packages we mentioned [before](../01-introduction/index.html#structure-and-architecture).  In this sense, our `DemoAnalyzer` is just one more CMSSW package.  However, the headers and implementation of our simple DemoAnalyzer are coded in one single file under the `src` directory.  The file was automatically named `DemoAnalyzer.cc`
 
-> CMSSW could be very pick about the structure of its packages.  Most of the time, scripts or other tools expect to have a `Package/Sub-Package` structure, just like our `Demo/DemoAnalyzer` example.
+> CMSSW could be very picky about the structure of its packages.  Most of the time, scripts or other tools expect to have a `Package/Sub-Package` structure, just like our `Demo/DemoAnalyzer` example.
 {: .testimonial}
 
 We also notice we have a python configuration file called `demoanalyzer_cfg.py` (unlike its cousins, it is not inside the `python` directory).  This is the default configurator for the `DemoAnalyzer.cc` code.

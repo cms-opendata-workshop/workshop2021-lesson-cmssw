@@ -70,7 +70,7 @@ or to a place in the shared cvmfs area if working in a virtual machine:
 
 ## **cmsRun**, the CMSSW executable
 
-All the packages that comprise the CMSSW release in use have been already compiled and linked to one single **executable**, which is called `cmsRun`.  So, unless you want to create your own plugin (addition) for the software, you won't not even have to re-compile.  You can actually try to execute this command by itself, but it will give you a configuration error:
+All the packages that comprise the CMSSW release in use have been already compiled and linked to one single **executable**, which is called `cmsRun`.  So, unless you want to create your own plugin (addition) for the software, you won't even have to re-compile.  You can actually try to execute this command by itself, but it will give you a configuration error:
 
 ~~~
 cmsRun
@@ -114,29 +114,29 @@ So, inevitably, the cmsRun executable needs a configuration file.  This configur
 > > you'll get an output similar to:
 > >
 > > ~~~
-> > 18-Sep-2020 06:11:41 CEST  Initiating request to open file root://eospublic.cern.ch//eos/opendata/cms/Run2011A/ElectronHad/AOD/12Oct2013-v1/20001/001F9231-F141-E311-8F76-003048F00942.root
-> > 18-Sep-2020 06:11:44 CEST  Successfully opened file root://eospublic.cern.ch//eos/opendata/cms/Run2011A/ElectronHad/AOD/12Oct2013-v1/20001/001F9231-F141-E311-8F76-003048F00942.root
-> > Begin processing the 1st record. Run 166782, Event 340184599, LumiSection 309 at 18-Sep-2020 06:11:53.936 CEST
-> > Begin processing the 2nd record. Run 166782, Event 340185007, LumiSection 309 at 18-Sep-2020 06:11:53.937 CEST
-> > Begin processing the 3rd record. Run 166782, Event 340187903, LumiSection 309 at 18-Sep-2020 06:11:53.937 CEST
-> > Begin processing the 4th record. Run 166782, Event 340227487, LumiSection 309 at 18-Sep-2020 06:11:53.937 CEST
-> > Begin processing the 5th record. Run 166782, Event 340210607, LumiSection 309 at 18-Sep-2020 06:11:53.937 CEST
-> > Begin processing the 6th record. Run 166782, Event 340256207, LumiSection 309 at 18-Sep-2020 06:11:53.938 CEST
-> > Begin processing the 7th record. Run 166782, Event 340165759, LumiSection 309 at 18-Sep-2020 06:11:53.938 CEST
-> > Begin processing the 8th record. Run 166782, Event 340396487, LumiSection 309 at 18-Sep-2020 06:11:53.938 CEST
-> > Begin processing the 9th record. Run 166782, Event 340390767, LumiSection 309 at 18-Sep-2020 06:11:53.939 CEST
-> > Begin processing the 10th record. Run 166782, Event 340435263, LumiSection 309 at 18-Sep-2020 06:11:53.939 CEST
-> > 18-Sep-2020 06:11:54 CEST  Closed file root://eospublic.cern.ch//eos/opendata/cms/Run2011A/ElectronHad/AOD/12Oct2013-v1/20001/001F9231-F141-E311-8F76-003048F00942.root
+> > 01-Jul-2021 04:51:59 CEST  Initiating request to open file root://eospublic.cern.ch//eos/opendata/cms/Run2012B/DoubleMuParked/AOD/22Jan2013-v1/10000/1EC938EF-ABEC-E211-94E0-90E6BA442F24.root
+> > 01-Jul-2021 04:52:03 CEST  Successfully opened file root://eospublic.cern.ch//eos/opendata/cms/Run2012B/DoubleMuParked/AOD/22Jan2013-v1/10000/1EC938EF-ABEC-E211-94E0-90E6BA442F24.root
+> > Begin processing the 1st record. Run 195013, Event 24425389, LumiSection 66 at 01-Jul-2021 04:52:14.775 CEST
+> > Begin processing the 2nd record. Run 195013, Event 24546773, LumiSection 66 at 01-Jul-2021 04:52:14.776 CEST
+> > Begin processing the 3rd record. Run 195013, Event 24679037, LumiSection 66 at 01-Jul-2021 04:52:14.776 CEST
+> > Begin processing the 4th record. Run 195013, Event 24839453, LumiSection 66 at 01-Jul-2021 04:52:14.777 CEST
+> > Begin processing the 5th record. Run 195013, Event 24894477, LumiSection 66 at 01-Jul-2021 04:52:14.778 CEST
+> > Begin processing the 6th record. Run 195013, Event 24980717, LumiSection 66 at 01-Jul-2021 04:52:14.778 CEST
+> > Begin processing the 7th record. Run 195013, Event 25112869, LumiSection 66 at 01-Jul-2021 04:52:14.779 CEST
+> > Begin processing the 8th record. Run 195013, Event 25484261, LumiSection 66 at 01-Jul-2021 04:52:14.780 CEST
+> > Begin processing the 9th record. Run 195013, Event 25702821, LumiSection 66 at 01-Jul-2021 04:52:14.780 CEST
+> > Begin processing the 10th record. Run 195013, Event 25961949, LumiSection 66 at 01-Jul-2021 04:52:14.781 CEST
+> > 01-Jul-2021 04:52:14 CEST  Closed file root://eospublic.cern.ch//eos/opendata/cms/Run2012B/DoubleMuParked/AOD/22Jan2013-v1/10000/1EC938EF-ABEC-E211-94E0-90E6BA442F24.root
 > >
 > > =============================================
 > >
 > > MessageLogger Summary
-> >
-> >  type     category        sev    module        subroutine        count    total
-> >  ---- -------------------- -- ---------------- ----------------  -----    -----
+> > 
+> > type     category        sev    module        subroutine        count    total
+> > ---- -------------------- -- ---------------- ----------------  -----    -----
 > >     1 fileAction           -s file_close                             1        1
 > >     2 fileAction           -s file_open                              2        2
-> >
+> > 
 > >  type    category    Examples: run/evt        run/evt          run/evt
 > >  ---- -------------------- ---------------- ---------------- ----------------
 > >     1 fileAction           PostEndRun                        
@@ -164,7 +164,6 @@ Reading cached build data
 >> Local Products Rules ..... started
 >> Local Products Rules ..... done
 >> Building CMSSW version CMSSW_5_3_32 ----
->> Subsystem FT_53_LV5_AN1 built
 >> Entering Package Demo/DemoAnalyzer
 >> Creating project symlinks
   src/Demo/DemoAnalyzer/python -> python/Demo/DemoAnalyzer
@@ -173,7 +172,7 @@ Reading cached build data
 >> Subsystem Demo built
 >> Local Products Rules ..... started
 >> Local Products Rules ..... done
-gmake[1]: Entering directory `/home/cmsusr/test/CMSSW_5_3_32'
+gmake[1]: Entering directory `/home/cmsusr/CMSSW_5_3_32'
 >> Creating project symlinks
   src/Demo/DemoAnalyzer/python -> python/Demo/DemoAnalyzer
 >> Done python_symlink
@@ -183,13 +182,16 @@ gmake[1]: Entering directory `/home/cmsusr/test/CMSSW_5_3_32'
 >> All python modules compiled
 >> Pluging of all type refreshed.
 >> Done generating edm plugin poisoned information
-gmake[1]: Leaving directory `/home/cmsusr/test/CMSSW_5_3_32'
+gmake[1]: Leaving directory `/home/cmsusr/CMSSW_5_3_32'
 ~~~
 {: .output}
 
 Note that scram only goes into the `Demo/DemoAnalyzer` package that we created locally to validate our setup in a previous lesson.  All the rest of the packages in the release were already compiled.  Since there is nothing new to compile, it finishes very quickly.  In a later episode we will modify this `DemoAnalyzer` and will need to compile again.
 
 > Point to be made: if you compile at main `src` level, all the packages in there will compiled.  However, if you go inside a specific package or sub-package, like our `Demo/DemoAnalyzer`, only the code in that subpackage will be compiled.
+{: .testimonial}
+
+> Note: if you are using a soft link to an area that is perhaps mounted from the host machine (like in the [example](https://cms-opendata-workshop.github.io/workshop2021-lesson-docker/03-docker-for-cms-opendata/index.html#docker-container) from the Docker lesson), you must compile at the main `src` level, i.e., `/home/cmsusr/CMSSW_5_3_32/src`, otherwise the compilation will fail.  A small price to pay for convenience.
 {: .testimonial}
 
 ## Additional goodies
@@ -220,16 +222,16 @@ There are also additional scripts, like the Event Data Model(EDM) [utilities](ht
 > > After checking the documentation above, the following one-liner will work.
 > >
 > > ~~~
-> > edmEventSize -v root://eospublic.cern.ch//eos/opendata/cms/Run2011A/ElectronHad/AOD/12Oct2013-v1/20001/001F9231-F141-E311-8F76-003048F00942.root |grep Events
+> > edmEventSize -v root://eospublic.cern.ch//eos/opendata/cms/Run2012B/DoubleMuParked/AOD/22Jan2013-v1/10000/1EC938EF-ABEC-E211-94E0-90E6BA442F24.root |grep Events
 > > ~~~
 > > {: .language-bash}
 > >
 > > ~~~
-> > File root://eospublic.cern.ch//eos/opendata/cms/Run2011A/ElectronHad/AOD/12Oct2013-v1/20001/001F9231-F141-E311-8F76-003048F00942.root Events 16728
+> > File root://eospublic.cern.ch//eos/opendata/cms/Run2012B/DoubleMuParked/AOD/22Jan2013-v1/10000/1EC938EF-ABEC-E211-94E0-90E6BA442F24.root Events 12279
 > > ~~~
 > > {: .output}
 > >
-> > So the ROOT file has 16728 events.
+> > So the ROOT file has 12279 events.
 > >
 > {: .solution}
 {: .challenge}

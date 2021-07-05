@@ -523,10 +523,6 @@ process.mypath = cms.Path (process.m1+process.m2+process.s1+process.m3)
 > >        'root://eospublic.cern.ch//eos/opendata/cms/Run2012B/DoubleMuParked/AOD/22Jan2013-v1/10000/1EC938EF-ABEC-E211-94E0-90E6BA442F24.root'
 > >    )
 > > )
-> > #needed to cache the conditions data
-> > process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-> > #process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/FT53_V21A_AN6_FULL.db')
-> > process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 > >
 > > process.demo = cms.EDAnalyzer('DemoAnalyzer',
 > >        InputCollection = cms.InputTag("muons")

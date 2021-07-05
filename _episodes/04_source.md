@@ -299,6 +299,20 @@ DemoAnalyzer::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup co
 
 For instance, any instructions placed inside the `beginRun` routine will be executed every time the Framework sees a new Run (a Run is determined by the start and stop of the acquisition of the CMS detector).  One may use the `beginJob` and `endJob` routines to, for example, book histograms or write output files.
 
+Let's compile (heads-up: it will fail; see below)
+
+~~~
+scram b
+~~~
+{: .language-bash}
+
+> ## Work assignment
+>
+> The compilation will invariably fail.  This is because the Muon classes we added introduced some dependencies that need to be taken care of in the `BuildFile.xml`.  We will deal with this in a moment.  Now, however, it is a good time to submit your assignment for this lesson.  Please copy the compilation error message you got and paste it to the corresponding section in our [assignment form](https://forms.gle/DDboG1MCcSNRBRHFA); remember you must sign in and <strong style="color: red;">click on the submit button</strong> in order to save your work.  You can go back to edit the form at any time.
+{: .challenge}
+
+
+<!--
 > ## Let's compile
 >  
 > ~~~
@@ -317,7 +331,7 @@ For instance, any instructions placed inside the `beginRun` routine will be exec
 > > >> Entering Package Demo/DemoAnalyzer
 > > >> Creating project symlinks
 > >   src/Demo/DemoAnalyzer/python -> python/Demo/DemoAnalyzer
-> > >> Compiling edm plugin /home/cmsusr/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc 
+> > >> Compiling edm plugin /home/cmsusr/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc
 > > In file included from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/TrackingRecHit/interface/TrackingRecHit.h:4:0,
 > >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/TrackingRecHit/interface/RecSegment.h:17,
 > >                  from /opt/cms/slc6_amd64_gcc472/cms/cmssw/CMSSW_5_3_32/src/DataFormats/DTRecHit/interface/DTRecSegment4D.h:16,
@@ -345,6 +359,7 @@ For instance, any instructions placed inside the `beginRun` routine will be exec
 > > This is because the Muon classes we added introduced some dependencies that need to be taken care of in the `BuildFile.xml`
 > {: .solution}
 {: .challenge}
+-->
 
 So let's modify the `Demo/DemoAnalyzer/BuildFile.xml` to include `DataFormats/MuonReco` dependencies.  It should look like:
 

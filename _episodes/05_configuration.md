@@ -126,6 +126,7 @@ Inside the process object there must be exactly one object assigned that has Pyt
 
 Note also that the `fileNames` variable is a `vstring`, i.e., a vector of strings in the C++ sense.  In Python, it is a list, so you can very well input a comma separated list of files.  There is a drawback, though.  In general, our open datasets will contain more than 255 files, which is the limit for the number of arguments a Python function can take, so very long vstrings cannot be created in one step.  There are [various alternatives](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePythonTips#Running_on_more_than_255_files) to circumvent this problem.  To run over massive amounts of ROOT files, one will usually use the [FileUtils](https://github.com/cms-sw/cmssw/blob/master/FWCore/Utilities/python/FileUtils.py) module to load index files instead of individual ROOT files.
 
+<!--
 ## Conditions Data
 
 Let's keep exploring the `demoanalyzer_cfg.py` config file.  The next few lines
@@ -142,6 +143,7 @@ process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 have to do with being able to read CMSSW database information.  We call this the [Conditions Data](http://opendata.cern.ch/docs/cms-guide-for-condition-database) as we may find values for calibration, alignment, trigger info, etc., in these database snapshots.  One can think of the `GlobalTag` as a label that contains a set of database snapshots that need to be adequate for a point in time in the history of the CMS detector.  For 2011/2012 open data release, the global tag is `FT53_V21A_AN6` (the `::All` string is a flag that tells the frameworks to read *All* the information associated with the tag).  
 
 The `connect` variable just modifies they way in which the framework is going to access these snapshots. You may notice that, if you are using the Docker environment, this line is commented out (like above), while if you are using the Virtual Machine it is not commented out.  This is because when using VMs, we read these conditions from the shared files system area at CERN (CVMFS), so we need it active.  Read in the latter way, the conditions will be cached locally in your virtual machine the first time you run and so the CMSSW job will be slow.  Fortunately, we already did this while setting up our VM, so our jobs will run much faster.  This does not really matter for the Docker container (keep this line commented out).
+-->
 
 ## Configure our DemoAnalyzer
 
@@ -265,7 +267,7 @@ Reading cached build data
 >> Entering Package Demo/DemoAnalyzer
 >> Creating project symlinks
   src/Demo/DemoAnalyzer/python -> python/Demo/DemoAnalyzer
->> Compiling edm plugin /home/cmsusr/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc 
+>> Compiling edm plugin /home/cmsusr/CMSSW_5_3_32/src/Demo/DemoAnalyzer/src/DemoAnalyzer.cc
 >> Building edm plugin tmp/slc6_amd64_gcc472/src/Demo/DemoAnalyzer/src/DemoDemoAnalyzer/libDemoDemoAnalyzer.so
 Leaving library rule at Demo/DemoAnalyzer
 @@@@ Running edmWriteConfigs for DemoDemoAnalyzer

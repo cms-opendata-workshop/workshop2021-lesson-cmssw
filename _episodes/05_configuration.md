@@ -524,6 +524,11 @@ process.mypath = cms.Path (process.m1+process.m2+process.s1+process.m3)
 > >    )
 > > )
 > >
+> > #If working in the Virtual Machine, you can comment out these next 3 lines (we do not need them here for now) They will be needed and explained later
+> > #process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+> > #process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/FT53_V21A_AN6_FULL.db')
+> > #process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+> >
 > > process.demo = cms.EDAnalyzer('DemoAnalyzer',
 > >        InputCollection = cms.InputTag("muons")
 > > )

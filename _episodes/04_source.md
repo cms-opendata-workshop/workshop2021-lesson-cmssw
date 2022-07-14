@@ -48,7 +48,7 @@ Something important to take into account is that you can learn a lot about the k
 
 > ## Including muon headers
 >
-> Let's pretend that we are interested in extracting the energy of all the muons in the event.  We would need to add the appropriate classes for this.  After quickly reviewing [this chapter](https://cms-opendata-guide.web.cern.ch/analysis/selection/objects/) of the CMS Open Data Guide (which is still under construction), we conclude that we need to add these two header lines to our analyzer:
+> Let's pretend that we are interested in extracting the energy of all the muons in the event.  We would need to add the appropriate classes for this.  After quickly reviewing [this chapter](https://cms-opendata-guide.web.cern.ch/analysis/selection/objects/objects/) of the CMS Open Data Guide (which is still under construction), we conclude that we need to add these two header lines to our analyzer:
 >
 > ```
 > //classes to extract Muon information

@@ -214,7 +214,7 @@ Anything that goes inside this routine will loop over all available events.  The
 
 > ## Get the muons energy
 >
-> Now let's add a few lines in the analyzer so we can retrieve the energy of all the muons in each event.  We will print out this information as an example. Again, after checking out [this guide](https://cms-opendata-guide.web.cern.ch/analysis/selection/objects/#access-methods), the analyze method becomes:
+> Now let's add a few lines in the analyzer so we can retrieve the energy of all the muons in each event.  We will print out this information as an example. Again, after checking out [this guide](https://cms-opendata-guide.web.cern.ch/analysis/selection/objects/objects/#access-methods), the analyze method becomes:
 >
 > ~~~
 > // ------------ method called for each event  ------------

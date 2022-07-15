@@ -158,11 +158,11 @@ has to do with our recently created `DemoAnalyzer`.  This module is now just a *
 
 > ## Making our EDAnalyzer configurable
 >
-> Let's pretend that for some reason you will need to run your job either for extracting the energy of RECO muons from beam collisions or from cosmic rays.  Note that CMS has information from both.  If you go back to [the guide](https://cms-opendata-guide.web.cern.ch/analysis/selection/objects/#access-methods) we used earlier to help us with the muon information extraction, you will notice that there is the possibility to use an `InputTag` that is `muonsFromCosmics`  instead of just `muons`.  Your job is to make this configurable in our `demoanalyzer_cfg.py` so we don't have to re-compile every time we want to make the switch.
+> Let's pretend that for some reason you will need to run your job either for extracting the energy of RECO muons from beam collisions or from cosmic rays.  Note that CMS has information from both.  If you go back to [the guide](https://cms-opendata-guide.web.cern.ch/analysis/selection/objects/objects/#access-methods) we used earlier to help us with the muon information extraction, you will notice that there is the possibility to use an `InputTag` that is `muonsFromCosmics`  instead of just `muons`.  Your job is to make this configurable in our `demoanalyzer_cfg.py` so we don't have to re-compile every time we want to make the switch.
 >
 > > ## Solution
 > >
-> > Since we are going to make our DemoAnalyzer configurable, the first thing we need to do is to modify the C++ source of our analyzer in order to accommodate configurability. Let's modify then the `Demo/DemoAnalyzer/src/DemoAnalyzer.cc` file.  Again, following the logic in the [Physics Ojects guide](https://cms-opendata-guide.web.cern.ch/analysis/selection/objects/#access-methods) and using an editor, we should add the declaration for a muon InputTag.  We could include this declaration right below the declaration of our member functions:
+> > Since we are going to make our DemoAnalyzer configurable, the first thing we need to do is to modify the C++ source of our analyzer in order to accommodate configurability. Let's modify then the `Demo/DemoAnalyzer/src/DemoAnalyzer.cc` file.  Again, following the logic in the [Physics Ojects guide](https://cms-opendata-guide.web.cern.ch/analysis/selection/objects/objects/#access-methods) and using an editor, we should add the declaration for a muon InputTag.  We could include this declaration right below the declaration of our member functions:
 > >
 > > ~~~
 > > virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
